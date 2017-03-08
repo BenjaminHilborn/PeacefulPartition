@@ -1,7 +1,7 @@
 class Node{
   color c;
-  float placedX;
-  float placedY;
+  float x;
+  float y;
   float currentX;
   float currentY;
   float randomWalkX;
@@ -9,15 +9,16 @@ class Node{
   float size;
   float soundFreq;
   
-  Node(float tempPlacedX, float tempPlacedY, float tempCurrentX, float tempCurrentY){
+  Node(float tempPlacedX, float tempPlacedY){
   c = color(random(128)+100,random(128)+100,random(128)+100);
-  placedX = tempPlacedX;
-  placedY = tempPlacedY;
-  currentX = tempCurrentX;
-  currentY = tempCurrentY;
+  x = tempPlacedX;
+  y = tempPlacedY;
+  //currentX = tempCurrentX;
+  //currentY = tempCurrentY;
   randomWalkX=random(10.0);
   randomWalkY=random(10.0);
   size=random(5);
   soundFreq=random(0);
   }
+  
 }
