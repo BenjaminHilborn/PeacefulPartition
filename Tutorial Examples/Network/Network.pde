@@ -27,7 +27,7 @@ class Node extends Object
 }
 
 // a basic class to save the loaded netlist
-class Network
+class Network1
 {
   Net  [] m_nets  = new Net[0];  // design nets in the design
   Node [] m_nodes = new Node[0]; // defined nodes in the design
