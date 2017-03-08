@@ -20,10 +20,33 @@ class Net extends Object
 // a basic class to define nodes
 class Node extends Object
 {
-  Node(int id)  { m_id = id; }
+  Node(int id, float tempPlacedX, float tempPlacedY, float tempCurrentX, float tempCurrentY)  { 
+    m_id = id; 
+    c = color(random(128)+100,random(128)+100,random(128)+100);
+    placedX = tempPlacedX;
+    placedY = tempPlacedY;
+    currentX = tempCurrentX;
+    currentY = tempCurrentY;
+    randomWalkX=random(10.0);
+    randomWalkY=random(10.0);
+    size=random(5);
+    soundFreq=random(0);
+  }
+  
+  
   int [] m_netIds = new int[0];
   
   int getDegree() { return m_netIds.length; }
+  
+  color c;
+  float placedX;
+  float placedY;
+  float currentX;
+  float currentY;
+  float randomWalkX;
+  float randomWalkY;
+  float size;
+  float soundFreq;
 }
 
 // a basic class to save the loaded netlist
