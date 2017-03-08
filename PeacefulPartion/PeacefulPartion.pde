@@ -1,3 +1,5 @@
+import processing.sound.*;
+   
    void setup() {
        size(400, 400);
        stroke(255);
