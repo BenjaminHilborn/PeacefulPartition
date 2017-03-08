@@ -1,0 +1,11 @@
+
+nodes: 8
+nets: 6
+
+net     0 :     0     2     4
+net     1 :     1     2     3
+net     2 :     2     4     5
+net     3 :     3     5
+net     4 :     4     6 
+net     5 :     5     6     7
+
