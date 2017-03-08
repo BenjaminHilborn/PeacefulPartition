@@ -15,6 +15,8 @@ class Net extends Object
   int [] m_nodeIds = new int[0];
   
   int getDegree() { return m_nodeIds.length; }
+  
+  int weight;
 }
 
 // a basic class to define nodes
