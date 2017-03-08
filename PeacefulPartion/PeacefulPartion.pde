@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 float[] positions =new float [3*2] ;
 float CIRCLE_SIZE = 50;
 
@@ -83,5 +84,5 @@ void checkOver() {
     {
       bover = false;
     }
-  } // for
+  } 
 }
