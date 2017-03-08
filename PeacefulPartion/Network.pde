@@ -20,7 +20,8 @@ class Net extends Object
 // a basic class to define nodes
 class Node extends Object
 {
-  Node(int id, float tempPlacedX, float tempPlacedY, float tempCurrentX, float tempCurrentY)  { 
+  Node(int id, float tempPlacedX, float tempPlacedY, float tempCurrentX, float tempCurrentY)  
+  { 
     m_id = id; 
     c = color(random(128)+100,random(128)+100,random(128)+100);
     placedX = tempPlacedX;
@@ -50,8 +51,12 @@ class Node extends Object
 }
 
 // a basic class to save the loaded netlist
-class Network1
+class customNetwork
 {
+  customNetwork(int difficulty){
+    
+  }
+  
   Net  [] m_nets  = new Net[0];  // design nets in the design
   Node [] m_nodes = new Node[0]; // defined nodes in the design
   
