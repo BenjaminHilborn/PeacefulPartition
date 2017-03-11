@@ -2,7 +2,7 @@ float[] positions =new float [3*2] ;
 float CIRCLE_SIZE = 50;
 Node[] my_nodes; 
 
-
+// comment
 // 0,1,2,3,4,5
 // 4,5,6,7,8,9
 float bx;
@@ -18,10 +18,11 @@ int whichImage;
  
 void setup() 
 {
-  my_nodes = new Node[5];
-  
-  for (int i = 0; i<5; i++){
-    my_nodes[i] = new Node(random(width),random(height));
+  int num =55;
+  my_nodes = new Node[num];
+
+  for (int i = 0; i<num; i++){
+    my_nodes[i] = new Node(1,random(width),random(height));
   }
   
   
@@ -42,6 +43,7 @@ void draw()
   background(25);
   
   node_collision_check(); // checks all nodes to see if they collide with each other
+  node_collision_edge();
   draw_nodes(); // draw nodes
   
 
@@ -63,9 +65,12 @@ void node_collision_check(){
     for (int i=0; i < my_nodes.length-1; i++){
       for (int j=i+1; j < my_nodes.length; j++){
        
-        
+        // Collisions with other nodes
         if (dist(my_nodes[j].x,my_nodes[j].y,my_nodes[i].x,my_nodes[i].y) < CIRCLE_SIZE ){
           float move_dist = 2;
+          float random = random(6);
+          if (random == 5) my_nodes[i].x += move_dist;
+          if (random == 4) my_nodes[j].x -= move_dist;
           
           if (my_nodes[i].x > my_nodes[j].x){
             my_nodes[i].x += move_dist;
@@ -88,6 +93,30 @@ void node_collision_check(){
       }
     }
   }
+}
+
+void node_collision_edge(){
+   if (locked == false){
+    for (int i=0; i < my_nodes.length; i++){
+       
+        // Collisions with   edges      
+          float move_dist = 2;
+          
+          if (my_nodes[i].x + CIRCLE_SIZE/2 > width){
+            my_nodes[i].x -= move_dist;
+          }
+          else if (my_nodes[i].x - CIRCLE_SIZE/2< 0){
+            my_nodes[i].x += move_dist;
+          }          
+          if (my_nodes[i].y + CIRCLE_SIZE/2> height){
+            my_nodes[i].y -= move_dist;
+          }
+          else if (my_nodes[i].y - CIRCLE_SIZE/2< 0){
+            my_nodes[i].y += move_dist;
+          } 
+        }      
+      }
+    
 }
 
  

@@ -1,4 +1,4 @@
-class Node{
+/*class Node{
   color c;
   float x;
   float y;
@@ -21,4 +21,4 @@ class Node{
   soundFreq=random(0);
   }
   
-}
+}*/
