@@ -33,7 +33,7 @@ class Node extends Object
     //currentY = tempCurrentY;
     randomWalkX=random(10.0);
     randomWalkY=random(10.0);
-    size=random(5);
+    size=random(70,100);
     soundFreq=random(0);
   }
   
@@ -65,13 +65,13 @@ class customNetwork
         int numberOfConnectionsMade = 0;
         
         //make nodes
-        ArrayList<Node> my_nodes = new ArrayList<Node>();
+        my_nodes = new ArrayList<Node>();
         for(int i=0;i<numberOfNodes;i++){
           my_nodes.add(new Node(i, width*random(0.0,1.0),height*random(0.0,1.0)));
         }
         
         //make nets
-        ArrayList<Net> my_nets = new ArrayList<Net>();
+        my_nets = new ArrayList<Net>();
         for(int i=0;i<numberOfNets;i++){
           my_nets.add(new Net(i));
         }
@@ -157,14 +157,14 @@ class customNetwork
   Node[] getNodesConnectedToNet(Net net) { // get the nodes connected to a given net
     int numNodes = net.getDegree();
     Node[] nodes = new Node[numNodes];
-    for(int i = 0; i < numNodes; ++i) nodes[i] = m_nodes[net.m_nodeIds[i]];
+    for(int i = 0; i < numNodes; ++i) nodes[i] = m_nodes[net.m_nodeIds.get(i)];
     return nodes;
   }
   
   Net[] getNetsConnectedToNode(Node node) { // get the nets connected a given node
     int numNets = node.getDegree();
     Net[] nets = new Net[numNets];
-    for(int i = 0; i < numNets; ++i) nets[i] = m_nets[node.m_netIds[i]];
+    for(int i = 0; i < numNets; ++i) nets[i] = m_nets[node.m_netIds.get(i)];
     return nets;
   }
   
@@ -216,9 +216,9 @@ class customNetwork
   
   boolean isNodeConnectedToNet(Node nd, Net net)
   {
-    for(int i = 0; i < nd.m_netIds.length; ++i)
+    for(int i = 0; i < nd.m_netIds.size(); ++i)
     {
-      if(nd.m_netIds[i] == net.getId()) return true;
+      if(nd.m_netIds.get(i) == net.getId()) return true;
     }
     return false;
   }

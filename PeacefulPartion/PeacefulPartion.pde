@@ -1,6 +1,5 @@
 float[] positions =new float [3*2] ;
-float CIRCLE_SIZE = 50;
-Node[] my_nodes; 
+float CIRCLE_SIZE = 50; 
 
 // comment
 // 0,1,2,3,4,5
@@ -15,15 +14,21 @@ float bdifx = 0.0;
 float bdify = 0.0; 
 float newx, newy;
 int whichImage;
- 
+
+customNetwork playNetwork;
+ArrayList<Node> my_nodes;
+ArrayList<Net> my_nets;
+
 void setup() 
 {
-  int num =55;
-  my_nodes = new Node[num];
+  //int num =10;
+  //my_nodes = new Node[num];
 
-  for (int i = 0; i<num; i++){
-    my_nodes[i] = new Node(1,random(width),random(height));
-  }
+  //for (int i = 0; i<num; i++){
+  //  my_nodes.get(i) = new Node(1,random(width),random(height));
+  //
+  playNetwork = new customNetwork(0);  
+
   
   
   imageMode (CENTER);
@@ -42,6 +47,7 @@ void draw()
 { 
   background(25);
   
+  
   node_collision_check(); // checks all nodes to see if they collide with each other
   node_collision_edge();
   draw_nodes(); // draw nodes
@@ -50,44 +56,44 @@ void draw()
 }
 
 void draw_nodes(){
-    for (int i=0; i < my_nodes.length; i++) {
+    for (int i=0; i < my_nodes.size(); i++) {
     if (bover && whichImage==i) 
       stroke(255);  // white
     else
       noStroke(); 
     ellipseMode(CENTER);
-    ellipse ( my_nodes[i].x, my_nodes[i].y, CIRCLE_SIZE, CIRCLE_SIZE) ;
+    ellipse ( my_nodes.get(i).x, my_nodes.get(i).y, my_nodes.get(i).size, my_nodes.get(i).size) ;
   }
 }
 
 void node_collision_check(){
   if (locked == false){
-    for (int i=0; i < my_nodes.length-1; i++){
-      for (int j=i+1; j < my_nodes.length; j++){
+    for (int i=0; i < my_nodes.size()-1; i++){
+      for (int j=i+1; j < my_nodes.size(); j++){
        
         // Collisions with other nodes
-        if (dist(my_nodes[j].x,my_nodes[j].y,my_nodes[i].x,my_nodes[i].y) < CIRCLE_SIZE ){
+        if (dist(my_nodes.get(j).x,my_nodes.get(j).y,my_nodes.get(i).x,my_nodes.get(i).y) < (my_nodes.get(i).size + my_nodes.get(j).size)/2 ){
           float move_dist = 2;
           float random = random(6);
-          if (random == 5) my_nodes[i].x += move_dist;
-          if (random == 4) my_nodes[j].x -= move_dist;
+          if (random == 5) my_nodes.get(i).x += move_dist;
+          if (random == 4) my_nodes.get(j).x -= move_dist;
           
-          if (my_nodes[i].x > my_nodes[j].x){
-            my_nodes[i].x += move_dist;
-            my_nodes[j].x -= move_dist;
+          if (my_nodes.get(i).x > my_nodes.get(j).x){
+            my_nodes.get(i).x += move_dist;
+            my_nodes.get(j).x -= move_dist;
           }
           else {
-            my_nodes[i].x -= move_dist;
-            my_nodes[j].x += move_dist;
+            my_nodes.get(i).x -= move_dist;
+            my_nodes.get(j).x += move_dist;
           }
           
-         if (my_nodes[i].y > my_nodes[j].y){
-            my_nodes[i].y += move_dist;
-            my_nodes[j].y -= move_dist;
+         if (my_nodes.get(i).y > my_nodes.get(j).y){
+            my_nodes.get(i).y += move_dist;
+            my_nodes.get(j).y -= move_dist;
           }
           else {
-            my_nodes[i].y -= move_dist;
-            my_nodes[j].y += move_dist;
+            my_nodes.get(i).y -= move_dist;
+            my_nodes.get(j).y += move_dist;
           }  
         }      
       }
@@ -97,22 +103,22 @@ void node_collision_check(){
 
 void node_collision_edge(){
    if (locked == false){
-    for (int i=0; i < my_nodes.length; i++){
+    for (int i=0; i < my_nodes.size(); i++){
        
         // Collisions with   edges      
           float move_dist = 2;
           
-          if (my_nodes[i].x + CIRCLE_SIZE/2 > width){
-            my_nodes[i].x -= move_dist;
+          if (my_nodes.get(i).x + my_nodes.get(i).size/2 > width){
+            my_nodes.get(i).x -= move_dist;
           }
-          else if (my_nodes[i].x - CIRCLE_SIZE/2< 0){
-            my_nodes[i].x += move_dist;
+          else if (my_nodes.get(i).x - my_nodes.get(i).size/2< 0){
+            my_nodes.get(i).x += move_dist;
           }          
-          if (my_nodes[i].y + CIRCLE_SIZE/2> height){
-            my_nodes[i].y -= move_dist;
+          if (my_nodes.get(i).y + my_nodes.get(i).size/2> height){
+            my_nodes.get(i).y -= move_dist;
           }
-          else if (my_nodes[i].y - CIRCLE_SIZE/2< 0){
-            my_nodes[i].y += move_dist;
+          else if (my_nodes.get(i).y - my_nodes.get(i).size/2< 0){
+            my_nodes.get(i).y += move_dist;
           } 
         }      
       }
@@ -141,15 +147,15 @@ void mouseDragged() {
     newy = mouseY;
   }
  
-  my_nodes[whichImage].x = newx;
-  my_nodes[whichImage].y = newy;
+  my_nodes.get(whichImage).x = newx;
+  my_nodes.get(whichImage).y = newy;
 }
 
 void checkOver() {
-  for (int i=0; i < my_nodes.length; i++) {
+  for (int i=0; i < my_nodes.size(); i++) {
 
     // Test if the cursor is over the node  
-    if (dist(mouseX,mouseY,my_nodes[i].x,my_nodes[i].y) < CIRCLE_SIZE/2 )
+    if (dist(mouseX,mouseY,my_nodes.get(i).x,my_nodes.get(i).y) < CIRCLE_SIZE/2 )
     {
       println ("mouseover image: "+i);
       whichImage=i;
@@ -164,5 +170,5 @@ void checkOver() {
 }
 
 void update() {
-   my_nodes[4].x++; 
+   my_nodes.get(4).x++; 
 }
