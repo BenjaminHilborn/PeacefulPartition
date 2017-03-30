@@ -32,7 +32,7 @@ void setup()
   
   
   imageMode (CENTER);
-  size(400, 400); // 960x540 will be final resolution
+  size(960, 540); // 960x540 will be final resolution
   bx = width/2.0;
   by = height/2.0;
  
@@ -50,6 +50,7 @@ void draw()
   
   node_collision_check(); // checks all nodes to see if they collide with each other
   node_collision_edge();
+  draw_nets();
   draw_nodes(); // draw nodes
   
 
@@ -62,7 +63,40 @@ void draw_nodes(){
     else
       noStroke(); 
     ellipseMode(CENTER);
+    fill(my_nodes.get(i).c);
     ellipse ( my_nodes.get(i).x, my_nodes.get(i).y, my_nodes.get(i).size, my_nodes.get(i).size) ;
+  }
+}
+
+void draw_nets(){
+  for (int i=0; i < my_nets.size(); i++) {
+    if(my_nets.get(i).m_nodeIds.size() == 2){
+      stroke(255);
+      line(playNetwork.getNode(my_nets.get(i).m_nodeIds.get(0)).x,playNetwork.getNode(my_nets.get(i).m_nodeIds.get(0)).y,
+           playNetwork.getNode(my_nets.get(i).m_nodeIds.get(1)).x, playNetwork.getNode(my_nets.get(i).m_nodeIds.get(1)).y);
+    }
+    if(my_nets.get(i).m_nodeIds.size() > 2){
+      //calculate centre
+      float totalX=0;
+      float totalY=0;
+      float centreX=0;
+      float centreY=0;
+      for(int j = 0; j< my_nets.get(i).m_nodeIds.size(); j++){
+        totalX += playNetwork.getNode(my_nets.get(i).m_nodeIds.get(j)).x;
+        totalY += playNetwork.getNode(my_nets.get(i).m_nodeIds.get(j)).y;
+      }
+      //average out the X and Y coordiates of all nodes connected to that net
+      centreX=totalX/my_nets.get(i).m_nodeIds.size();
+      centreY=totalY/my_nets.get(i).m_nodeIds.size();
+      //draw a line from the centre to each node
+      for(int j = 0; j< my_nets.get(i).m_nodeIds.size(); j++){
+        stroke(255);
+        line(centreX, centreY, playNetwork.getNode(my_nets.get(i).m_nodeIds.get(j)).x,playNetwork.getNode(my_nets.get(i).m_nodeIds.get(j)).y);
+      }
+    }
+    if(my_nets.get(i).m_nodeIds.size() < 2){
+      println("Error: Net is only connected to one node!");
+    }
   }
 }
 

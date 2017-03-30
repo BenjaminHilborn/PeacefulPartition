@@ -59,9 +59,9 @@ class customNetwork
   customNetwork(int difficulty){
     switch(difficulty){
       case 0: 
-        int numberOfNodes=5;
-        int numberOfNets=5;
-        int numberOfConnectionsAllowed = 10; //must be >= numberOfNets + numberOfNodes
+        int numberOfNodes=10;
+        int numberOfNets=7;
+        int numberOfConnectionsAllowed = 20; //must be >= numberOfNets + numberOfNodes
         int numberOfConnectionsMade = 0;
         
         //make nodes
@@ -77,7 +77,7 @@ class customNetwork
         }
         
         //make random connections
-        while(numberOfConnectionsMade != numberOfConnectionsAllowed){
+        while(numberOfConnectionsMade <= numberOfConnectionsAllowed){
           //if any node has no connections, connect it first
             for(int nodeNumber=0;nodeNumber<numberOfNodes;nodeNumber++){
               if (my_nodes.get(nodeNumber).m_netIds.size() == 0){
@@ -90,9 +90,9 @@ class customNetwork
               }
             }
             
-          //if any net has no connections, connect it
+          //if any net has less than 2 connections, connect it
           for(int netNumber=0;netNumber<numberOfNets;netNumber++){
-              if (my_nets.get(netNumber).m_nodeIds.size() == 0){
+              if (my_nets.get(netNumber).m_nodeIds.size() < 2){
                 int nodeNumber = int(random(0,numberOfNodes));
                 //add node to net
                 my_nets.get(netNumber).m_nodeIds.append(nodeNumber);
@@ -130,13 +130,13 @@ class customNetwork
   Net  [] m_nets  = new Net[0];  // design nets in the design
   Node [] m_nodes = new Node[0]; // defined nodes in the design
   
-  int getNumberOfNodes() { return m_nodes.length; }
-  int getNumberOfNets () { return m_nets.length;  }
+  int getNumberOfNodes() { return my_nodes.size(); }
+  int getNumberOfNets () { return my_nets.size();  }
   
   public Node getNode(int id) {
     if(id < getNumberOfNodes() )
     {
-      return m_nodes[id];
+      return my_nodes.get(id);
     }
     println("Error: the node does not exist! Requested id: ", id);
     exit();
