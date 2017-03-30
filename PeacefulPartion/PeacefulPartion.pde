@@ -15,6 +15,8 @@ float bdify = 0.0;
 float newx, newy;
 int whichImage;
 
+int BG_A=25;
+
 customNetwork playNetwork;
 ArrayList<Node> my_nodes;
 ArrayList<Net> my_nets;
@@ -28,11 +30,14 @@ void setup()
   //  my_nodes.get(i) = new Node(1,random(width),random(height));
   //
   playNetwork = new customNetwork(0);  
-
+  _solve(); //algorithmically generate best solution
   
+  soundSetup();
+  
+  background(BG_A);
   
   imageMode (CENTER);
-  size(960, 540); // 960x540 will be final resolution
+  size(960,540); // 960x540 will be final resolution
   bx = width/2.0;
   by = height/2.0;
  
@@ -45,16 +50,31 @@ void setup()
  
 void draw() 
 { 
-  background(25);
-  
+  //background(BG_A);
+  backgroundController();
+  soundController();
   
   node_collision_check(); // checks all nodes to see if they collide with each other
   node_collision_edge();
   draw_nets();
   draw_nodes(); // draw nodes
-  
-
+  draw_partition();
+  detectCuts();
 }
+
+void draw_partition(){
+  strokeWeight(4);
+  stroke(204, 102, 0);
+  line(width/2.0, 0, width/2.0, height);
+}
+
+void backgroundController(){
+  if(locked && BG_A<220) BG_A++;
+  if(!locked && BG_A>25) BG_A--;
+  background(BG_A);
+}
+
+
 
 void draw_nodes(){
     for (int i=0; i < my_nodes.size(); i++) {
@@ -194,6 +214,7 @@ void checkOver() {
       println ("mouseover image: "+i);
       whichImage=i;
       bover = true;  
+      sine.freq(my_nodes.get(i).soundFreq);
       break; // leave here !!!!!!!!!!!!!!!!!
     } 
     else
@@ -205,4 +226,8 @@ void checkOver() {
 
 void update() {
    my_nodes.get(4).x++; 
+}
+
+void detectCuts(){
+  
 }

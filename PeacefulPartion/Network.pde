@@ -34,7 +34,7 @@ class Node extends Object
     randomWalkX=random(10.0);
     randomWalkY=random(10.0);
     size=random(70,100);
-    soundFreq=random(0);
+    soundFreq=C_Scale[int(random(1,7))];
   }
   
   
@@ -59,7 +59,7 @@ class customNetwork
   customNetwork(int difficulty){
     switch(difficulty){
       case 0: 
-        int numberOfNodes=10;
+        int numberOfNodes=8;
         int numberOfNets=7;
         int numberOfConnectionsAllowed = 20; //must be >= numberOfNets + numberOfNodes
         int numberOfConnectionsMade = 0;
@@ -76,7 +76,7 @@ class customNetwork
           my_nets.add(new Net(i));
         }
         
-        //make random connections
+        //make connections
         while(numberOfConnectionsMade <= numberOfConnectionsAllowed){
           //if any node has no connections, connect it first
             for(int nodeNumber=0;nodeNumber<numberOfNodes;nodeNumber++){
@@ -94,6 +94,7 @@ class customNetwork
           for(int netNumber=0;netNumber<numberOfNets;netNumber++){
               if (my_nets.get(netNumber).m_nodeIds.size() < 2){
                 int nodeNumber = int(random(0,numberOfNodes));
+                //while(n
                 //add node to net
                 my_nets.get(netNumber).m_nodeIds.append(nodeNumber);
                 //add net to node
