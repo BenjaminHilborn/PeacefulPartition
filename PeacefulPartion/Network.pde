@@ -29,7 +29,7 @@ class Node extends Object
     c = color(random(128)+100,random(128)+100,random(128)+100);
     x = tempPlacedX;
     y = tempPlacedY;
-   // currentX = tempCurrentX;
+    // currentX = tempCurrentX;
     //currentY = tempCurrentY;
     randomWalkX=random(10.0);
     randomWalkY=random(10.0);
@@ -125,7 +125,6 @@ class customNetwork
        default:
          println("Error: Incorrect difficulty setting!");
     }
-    
   }
   
   Net  [] m_nets  = new Net[0];  // design nets in the design
@@ -155,21 +154,21 @@ class customNetwork
     return m_nets[0];
   }
  
-  Node[] getNodesConnectedToNet(Net net) { // get the nodes connected to a given net
+ public Node[] getNodesConnectedToNet(Net net) { // get the nodes connected to a given net
     int numNodes = net.getDegree();
     Node[] nodes = new Node[numNodes];
     for(int i = 0; i < numNodes; ++i) nodes[i] = m_nodes[net.m_nodeIds.get(i)];
     return nodes;
   }
   
-  Net[] getNetsConnectedToNode(Node node) { // get the nets connected a given node
+  public Net[] getNetsConnectedToNode(Node node) { // get the nets connected a given node
     int numNets = node.getDegree();
     Net[] nets = new Net[numNets];
     for(int i = 0; i < numNets; ++i) nets[i] = m_nets[node.m_netIds.get(i)];
     return nets;
   }
   
-  Node[] getNodesConnectedToNode(Node node) {
+  public Node[] getNodesConnectedToNode(Node node) {
     int[]  idList = new int[0];
     Node[] list = new Node[0];
     Net[]  nets = getNetsConnectedToNode(node);
@@ -185,6 +184,7 @@ class customNetwork
         }
       }
     }
+    
     // sort the list and then find a list with unique id numbers
     Arrays.sort(idList);
     int lastId = -1;

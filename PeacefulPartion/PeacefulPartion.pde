@@ -8,14 +8,21 @@ float bx;
 float by;
 int bs = 40;
 int bz = 30;
+int window_width = 960;
+int window_height = 540;
 boolean bover = false;
 boolean locked = false;
 float bdifx = 0.0; 
 float bdify = 0.0; 
 float newx, newy;
 int whichImage;
-
 int BG_A=25;
+int score = 500;
+int nodes_on_right = 0;
+int nodes_on_left = 0;
+int net_cuts = 0;
+PFont myFont;
+
 
 customNetwork playNetwork;
 ArrayList<Node> my_nodes;
@@ -23,12 +30,14 @@ ArrayList<Net> my_nets;
 
 void setup() 
 {
+  myFont = createFont("Georgia", 128);
+  
   //int num =10;
   //my_nodes = new Node[num];
 
   //for (int i = 0; i<num; i++){
   //  my_nodes.get(i) = new Node(1,random(width),random(height));
-  //
+
   playNetwork = new customNetwork(0);  
   _solve(); //algorithmically generate best solution
   
@@ -40,11 +49,12 @@ void setup()
   size(960,540); // 960x540 will be final resolution
   bx = width/2.0;
   by = height/2.0;
- 
+  
   for (int j=0; j < 3*2; j+=2) {
     positions[j]= random(width-CIRCLE_SIZE);
     positions[j+1]= random(height-CIRCLE_SIZE);
   }
+  
   fill(153);
 }
  
@@ -60,6 +70,29 @@ void draw()
   draw_nodes(); // draw nodes
   draw_partition();
   detectCuts();
+  detectNodesPerSide();
+  draw_text();
+  
+}
+
+void draw_text(){
+  textFont(myFont);
+  int text_size = 16;
+  textSize(text_size);
+  fill(255,255,255); //set text to white
+  int text_shift = 10; // pixels away from edge of screen
+
+  textAlign(RIGHT, TOP);  
+  text("Score: "+score, width-text_shift, text_shift);
+  
+  textAlign(RIGHT, TOP);  
+  text("Net Cuts: "+net_cuts, width-text_shift, text_shift+text_size);
+  
+  textAlign(RIGHT, BOTTOM);  
+  text("Nodes: "+nodes_on_right, width-text_shift, height-text_shift);
+  
+  textAlign(LEFT, BOTTOM);  
+  text("Nodes: "+nodes_on_left, text_shift, height-text_shift);
 }
 
 void draw_partition(){
@@ -73,7 +106,6 @@ void backgroundController(){
   if(!locked && BG_A>25) BG_A--;
   background(BG_A);
 }
-
 
 
 void draw_nodes(){
@@ -92,9 +124,10 @@ void draw_nets(){
   for (int i=0; i < my_nets.size(); i++) {
     if(my_nets.get(i).m_nodeIds.size() == 2){
       stroke(255);
-      line(playNetwork.getNode(my_nets.get(i).m_nodeIds.get(0)).x,playNetwork.getNode(my_nets.get(i).m_nodeIds.get(0)).y,
+      line(playNetwork.getNode(my_nets.get(i).m_nodeIds.get(0)).x, playNetwork.getNode(my_nets.get(i).m_nodeIds.get(0)).y,
            playNetwork.getNode(my_nets.get(i).m_nodeIds.get(1)).x, playNetwork.getNode(my_nets.get(i).m_nodeIds.get(1)).y);
     }
+    
     if(my_nets.get(i).m_nodeIds.size() > 2){
       //calculate centre
       float totalX=0;
@@ -105,15 +138,18 @@ void draw_nets(){
         totalX += playNetwork.getNode(my_nets.get(i).m_nodeIds.get(j)).x;
         totalY += playNetwork.getNode(my_nets.get(i).m_nodeIds.get(j)).y;
       }
+      
       //average out the X and Y coordiates of all nodes connected to that net
       centreX=totalX/my_nets.get(i).m_nodeIds.size();
       centreY=totalY/my_nets.get(i).m_nodeIds.size();
+      
       //draw a line from the centre to each node
       for(int j = 0; j< my_nets.get(i).m_nodeIds.size(); j++){
         stroke(255);
         line(centreX, centreY, playNetwork.getNode(my_nets.get(i).m_nodeIds.get(j)).x,playNetwork.getNode(my_nets.get(i).m_nodeIds.get(j)).y);
       }
     }
+    
     if(my_nets.get(i).m_nodeIds.size() < 2){
       println("Error: Net is only connected to one node!");
     }
@@ -161,22 +197,33 @@ void node_collision_edge(){
        
         // Collisions with   edges      
           float move_dist = 2;
+          float x = my_nodes.get(i).x;
+          float y = my_nodes.get(i).y;
+          float size = my_nodes.get(i).size;
           
-          if (my_nodes.get(i).x + my_nodes.get(i).size/2 > width){
+          // Right & left sides
+          if (x + size/2 > width){
             my_nodes.get(i).x -= move_dist;
           }
-          else if (my_nodes.get(i).x - my_nodes.get(i).size/2< 0){
+          else if (x - size/2< 0){
             my_nodes.get(i).x += move_dist;
-          }          
-          if (my_nodes.get(i).y + my_nodes.get(i).size/2> height){
+          }
+          
+          // Top and bottom
+          if (y + size/2> height){
             my_nodes.get(i).y -= move_dist;
           }
-          else if (my_nodes.get(i).y - my_nodes.get(i).size/2< 0){
+          else if (y - size/2< 0){
             my_nodes.get(i).y += move_dist;
-          } 
-        }      
-      }
-    
+          }
+          
+          // Collision with center
+          if (abs(x - width/2)< size/2 + 5){
+            if (x > width/2)    my_nodes.get(i).x += move_dist;
+            else                my_nodes.get(i).x -= move_dist;
+          }
+        }
+    }     
 }
 
  
@@ -207,9 +254,11 @@ void mouseDragged() {
 
 void checkOver() {
   for (int i=0; i < my_nodes.size(); i++) {
-
+    
+    bover = false;
+    
     // Test if the cursor is over the node  
-    if (dist(mouseX,mouseY,my_nodes.get(i).x,my_nodes.get(i).y) < CIRCLE_SIZE/2 )
+    if (dist(mouseX,mouseY,my_nodes.get(i).x,my_nodes.get(i).y) < my_nodes.get(i).size/2 )
     {
       println ("mouseover image: "+i);
       whichImage=i;
@@ -217,17 +266,43 @@ void checkOver() {
       sine.freq(my_nodes.get(i).soundFreq);
       break; // leave here !!!!!!!!!!!!!!!!!
     } 
-    else
-    {
-      bover = false;
-    }
   }
 }
 
-void update() {
-   my_nodes.get(4).x++; 
-}
 
 void detectCuts(){
+
+  int cuts = 0;
+  int value; // this counts how many cells are in right vs left. Right side increments, left decrements
+  //int prev_cut_side = 0; // -1 = left, 1 = right
   
+  for (int i=0; i < my_nets.size(); i++) {
+    
+     value = 0;
+     int size = my_nets.get(i).m_nodeIds.size();
+     for(int j = 0; j< size; j++){
+       
+         float x = playNetwork.getNode(my_nets.get(i).m_nodeIds.get(j)).x;
+         if ( x > width/2) value++;
+         else  value--;
+       }
+       
+       if ( size != value && size != -value)  cuts++;       
+     }
+     
+     net_cuts = cuts;
+}
+  
+
+void detectNodesPerSide(){
+  int left = 0;
+  int right = 0;
+  
+  for (int i=0; i < my_nodes.size(); i++){
+    if (my_nodes.get(i).x > window_width/2) right++;
+    else  left++;
+  }
+  
+  nodes_on_right = right;
+  nodes_on_left = left;
 }

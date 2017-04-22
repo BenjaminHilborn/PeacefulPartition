@@ -40,5 +40,6 @@ void soundController(){
   //lowPass.process(soundfile, lowPassCut);
   if(locked && amp<1.0) {amp+=0.005; room+=0.005;}
   if(!locked && amp>0) {amp-=0.01; room-=0.01;}
-  sine.amp(amp);
+  
+  //sine.amp(amp); commented out because this displays some annoying error all the time
 }
