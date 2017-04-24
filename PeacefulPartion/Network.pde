@@ -20,41 +20,6 @@ class Net extends Object
   int weight;
 }
 
-// a basic class to define nodes
-class Node extends Object
-{
-  Node(int id, float tempPlacedX, float tempPlacedY)  
-  { 
-    m_id = id; 
-    c = color(random(128)+100,random(128)+100,random(128)+100);
-    x = tempPlacedX;
-    y = tempPlacedY;
-    // currentX = tempCurrentX;
-    //currentY = tempCurrentY;
-    randomWalkX=random(10.0);
-    randomWalkY=random(10.0);
-    size=random(70,100);
-    soundFreq=C_Scale[int(random(1,7))];
-    gain=0;
-  }
-  
-  
-  IntList m_netIds = new IntList();
-  
-  int getDegree() { return m_netIds.size(); }
-  int gain;
-  
-  color c;
-  float x;
-  float y;
-  float currentX;
-  float currentY;
-  float randomWalkX;
-  float randomWalkY;
-  float size;
-  float soundFreq;
-}
-
 // a basic class to save the loaded netlist
 class customNetwork
 {
