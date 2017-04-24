@@ -41,10 +41,11 @@ void detectNodesPerSide(){
   for (int i=0; i < my_nodes.size(); i++){
     if (my_nodes.get(i).x > window_width/2){
       right++;
-      my_node.get(i).partition = 1;
+      my_nodes.get(i).partition = 1;
+    }
     else{
       left++;
-      my_node.get(i).partition = 0;
+      my_nodes.get(i).partition = 0;
     }
     
   }

@@ -6,7 +6,7 @@ void draw_text(){
   int text_shift = 10; // pixels away from edge of screen
 
   textAlign(RIGHT, TOP);  
-  text("Score: "+score, width-text_shift, text_shift);
+  text("Goal: "+bestCuts, width-text_shift, text_shift);
   
   textAlign(RIGHT, TOP);  
   text("Net Cuts: "+net_cuts, width-text_shift, text_shift+text_size);
