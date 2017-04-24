@@ -35,12 +35,14 @@ class Node extends Object
     randomWalkY=random(10.0);
     size=random(70,100);
     soundFreq=C_Scale[int(random(1,7))];
+    gain=0;
   }
   
   
   IntList m_netIds = new IntList();
   
   int getDegree() { return m_netIds.size(); }
+  int gain;
   
   color c;
   float x;

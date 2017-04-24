@@ -1,6 +1,10 @@
 void _solve(){
   //for all nodes
-    //computeGain(node)
+  for(int nodeNumber=0;nodeNumber<numberOfNodes;nodeNumber++){
+    computeGain(my_nodes.get(nodeNumber));
+    
+  }
+    //
     //create gainlist
     //order gainlist
   //for total number of moves == number of nodes
@@ -10,7 +14,7 @@ void _solve(){
     
 }
 
-int computeGain(node){
+int computeGain(Node node){
   //for all nets connected to node
     //calculate if cut
     //calculate if the move will cut
