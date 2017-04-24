@@ -26,6 +26,7 @@ class customNetwork
   customNetwork(int difficulty){
     switch(difficulty){
       case 0: 
+        int maxBalanceDifference=2;
         int numberOfNodes=8;
         int numberOfNets=7;
         int numberOfConnectionsAllowed = 20; //must be >= numberOfNets + numberOfNodes

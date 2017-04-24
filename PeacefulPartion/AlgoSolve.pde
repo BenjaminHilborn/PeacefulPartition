@@ -16,18 +16,49 @@ void _solve(){
       //move
     for(int step=0;step<gainList.length, step++){
       //check balance criteria
-      if(
+      if(gainList(step).partition == 0 && abs(nodes_on_right-nodes_on_left)>maxBalanceDifference){
+        continue;
+      }
+      else if(gainList(step).partition == 1 && abs(nodes_on_left-nodes_on_right)>maxBalanceDifference){
+        continue;
+      }
+      else{  //execute move
+        if(gainList(step).partition == 1) gainList(step).partition == 0;
+        else gainList(step).partition == 1;
+        //remove from gain list
+        gainList.remove(step)
+      }
     }
-    //else step though gainlist till move is found
   }
 }
 
-int computeGain(Node node){
-  //for all nets connected to node
-    //calculate if cut
-    //calculate if the move will cut
-  //sum all
-  //return gain
+//int computeGain(Node node){
+//  int cuts=0;
+//  int newCuts=0;
+//  //for all nets connected to node
+//  Nodes[] nodeList = getNodesConnectedToNode(node);
+//  int reference = node.partition;
+//  for(int node = 1; node < nodeList.length; node++){
+//    if(nodeList(node).partition != reference) cuts++;
+//  }
+//    //calculate if cut
+//    //calculate if the move will cut
+//    int new_reference = node.partition;
+//  for(int nets=0;nets<node.m_netIds.length;nets++){
+//    for(int nodes=0;nodes<node.m_netIds(nets).
+//    if(node.m_netIds(nets).)
+//    {
+//      cuts++;
+//    }
+//  }
+//  //sum all
+//  //return gain
+//}
+
+bool isNetCut(Net net){
+  for(){ //all nodes connected to net
+    getNodesConnectedToNet(Net net)
+  }
 }
 
 public static void quickSort(ArrayList arr, int low, int high) {
