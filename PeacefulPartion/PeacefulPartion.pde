@@ -1,5 +1,8 @@
 //float[] positions =new float [3*2] ;
 float CIRCLE_SIZE = 50; 
+int totalCurrentCuts;
+int newCuts;
+//
 
 // comment
 // 0,1,2,3,4,5
@@ -183,5 +186,6 @@ void detectCuts(){
      }
      
      net_cuts = cuts;
+     totalCurrentCuts = cuts;
 }
   

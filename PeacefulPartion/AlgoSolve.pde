@@ -11,10 +11,10 @@ void _solve(){
     quickSort(gainList, 0, numberOfNodes);
     
   //for total number of moves == number of nodes
-  for (int moves=0; moves<my_nodes.length;moves++){
+  for (int moves=0; moves<my_nodes.length; moves++){
     //is top of gainlist move allowed based on balance critera AND is not locked?
       //move
-    for(int step=0;step<gainList.length, step++){
+    for(int step=0;step<gainList.length; step++){
       //check balance criteria
       if(gainList(step).partition == 0 && abs(nodes_on_right-nodes_on_left)>maxBalanceDifference){
         continue;
@@ -32,28 +32,13 @@ void _solve(){
   }
 }
 
+//call this function to be played after mouse released && net has been moved
 //int computeGain(Node node){
-//  int cuts=0;
-//  int newCuts=0;
-//  //for all nets connected to node
-//  Nodes[] nodeList = getNodesConnectedToNode(node);
-//  int reference = node.partition;
-//  for(int node = 1; node < nodeList.length; node++){
-//    if(nodeList(node).partition != reference) cuts++;
-//  }
-//    //calculate if cut
-//    //calculate if the move will cut
-//    int new_reference = node.partition;
-//  for(int nets=0;nets<node.m_netIds.length;nets++){
-//    for(int nodes=0;nodes<node.m_netIds(nets).
-//    if(node.m_netIds(nets).)
-//    {
-//      cuts++;
-//    }
-//  }
-//  //sum all
-//  //return gain
-//}
+  //totalCurrentCuts
+  //call detect cuts for new partition.
+  //return newCuts - totalCurrentCuts which are both global variables
+}
+
 
 bool isNetCut(Net net){
   for(){ //all nodes connected to net
