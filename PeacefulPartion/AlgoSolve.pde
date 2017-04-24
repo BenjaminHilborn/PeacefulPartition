@@ -1,7 +1,7 @@
 void _solve(){
   //for all nodes
   for(int nodeNumber=0;nodeNumber<numberOfNodes;nodeNumber++){
-    computeGain(my_nodes.get(nodeNumber));
+    my_nodes.get(nodeNumber).gain = computeGain(my_nodes.get(nodeNumber));
     
   }
     //

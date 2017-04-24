@@ -27,6 +27,7 @@ PFont myFont;
 customNetwork playNetwork;
 ArrayList<Node> my_nodes;
 ArrayList<Net> my_nets;
+ArrayList<Node> gainList;
 
 void setup() 
 {
