@@ -23,6 +23,9 @@ int nodes_on_left = 0;
 int net_cuts = 0;
 int mode = 0; // 0 == main menu, 1 = about, 2 = play
 PFont myFont;
+int minCuts = 3;
+float balanceMin = 0.1;
+float balanceMax = 0.9;
 
 
 customNetwork playNetwork;
@@ -35,7 +38,7 @@ void setup()
   myFont = createFont("Georgia", 128);
   
 
-  playNetwork = new customNetwork(0);  
+  newNetwork(0);  
   //_solve(); //algorithmically generate best solution
   
   soundSetup();
@@ -72,6 +75,10 @@ void draw()
   
   if (mode == 1){
     
+    draw_title();
+    draw_about();
+    draw_about_text();
+    draw_back_button();    
   }
   
   if (mode == 2){
@@ -80,6 +87,24 @@ void draw()
     detectCuts();
     detectNodesPerSide();
     draw_text();
+    draw_back_button();
+    checkComplete();
+  }
+  
+  if (mode == 3){
+    draw_partition();
+    detectCuts();
+    detectNodesPerSide();
+    noStroke();
+    rectMode(CENTER);
+    fill(0,0,0,155);
+    rect(width/2,height/2,width,height);
+    draw_text();
+    draw_complete();
+    draw_complete_title();
+    draw_back_button();
+    
+    
   }
 
 }
@@ -87,7 +112,7 @@ void draw()
 
 void backgroundController(){
   if(locked && BG_A<220) BG_A++;
-  if(!locked && BG_A>25) BG_A--;
+  if(!locked && BG_A>0) BG_A--;
   background(BG_A);
 }
  
@@ -96,14 +121,20 @@ void mousePressed() {
   if (mode == 0){
     
     // Play
-    if (dist(mouseX,mouseY,width/2 - 100, height/2) < CIRCLE_SIZE*2 ){
+    if (dist(mouseX,mouseY,width/2 - 100, height/2) < CIRCLE_SIZE ){
       mode = 2;
-      playNetwork = new customNetwork(0);  
+      newNetwork(0); 
     }
     
     // About
-   else if (dist(mouseX,mouseY,width/2 + 100, height/2) < CIRCLE_SIZE*2 ){
+   else if (dist(mouseX,mouseY,width/2 + 100, height/2) < CIRCLE_SIZE ){
       mode = 1;
+    }
+  }
+  
+  if (mode == 1){
+          if (dist(mouseX,mouseY,40,40) < CIRCLE_SIZE ){
+        mode = 0;
     }
   }
   
@@ -116,10 +147,20 @@ void mousePressed() {
     else {
       locked = false;
       
-      if (dist(mouseX,mouseY,50,50) < CIRCLE_SIZE*2 ){
+      // Main Menu Button
+      if (dist(mouseX,mouseY,40,40) < CIRCLE_SIZE ){
         mode = 0;
+         newNetwork(0);  
     }
     
+    }
+  }
+  
+  if (mode == 3){
+      if (dist(mouseX,mouseY,width/2, height/2) < CIRCLE_SIZE ){
+      newNetwork(0); 
+      mode = 2;
+      
     }
   }
   
@@ -152,7 +193,7 @@ void checkOver() {
     // Test if the cursor is over the node  
     if (dist(mouseX,mouseY,my_nodes.get(i).x,my_nodes.get(i).y) < my_nodes.get(i).size/2 )
     {
-      println ("mouseover image: "+i);
+     // println ("mouseover image: "+i);
       whichImage=i;
       bover = true;  
       sine.freq(my_nodes.get(i).soundFreq);
@@ -183,5 +224,55 @@ void detectCuts(){
      }
      
      net_cuts = cuts;
+}
+
+void checkComplete(){
+  if (net_cuts <= minCuts){
+    double tot = nodes_on_left+nodes_on_right;
+    double asd = nodes_on_left/tot;
+    
+    if (nodes_on_left/tot > balanceMin && nodes_on_left/tot < balanceMax){
+      mode = 3; 
+    }
+   
+  }
+}
+
+int checkCompleteInt(){
+  int val = 0;
+  
+  if (net_cuts <= minCuts){
+    double tot = nodes_on_left+nodes_on_right;
+    
+    if (nodes_on_left/tot > balanceMin && nodes_on_left/tot < balanceMax){
+      val = 1; 
+    }
+  }
+  return val;
+}
+
+
+void newNetwork(int val){
+  int createAnother = 0;
+  
+  do{
+   playNetwork = new customNetwork(val);  
+   detectNodesPerSide();
+   detectCuts();
+  // int tot=nodes_on_right+nodes_on_left;
+ /* if (nodes_on_left < floor(tot/2) ||  nodes_on_right < floor(tot/2)){
+    createAnother = 1;
+  }
+  else
+    createAnother = 0;*/
+    
+    if (net_cuts <= minCuts)
+      createAnother = 1;
+    else
+      createAnother = 0;
+
+  }while(createAnother == 1);
+
+
 }
   

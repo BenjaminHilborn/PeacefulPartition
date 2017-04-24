@@ -6,16 +6,19 @@ void draw_text(){
   int text_shift = 10; // pixels away from edge of screen
 
   textAlign(RIGHT, TOP);  
-  text("Score: "+score, width-text_shift, text_shift);
+  text("Required Score: "+"FILL IN COMPS BEST", width-text_shift, text_shift);
   
   textAlign(RIGHT, TOP);  
-  text("Net Cuts: "+net_cuts, width-text_shift, text_shift+text_size);
+  text("Your Score: "+net_cuts, width-text_shift, text_shift+text_size);
   
-  textAlign(RIGHT, BOTTOM);  
-  text("Nodes: "+nodes_on_right, width-text_shift, height-text_shift);
-  
-  textAlign(LEFT, BOTTOM);  
-  text("Nodes: "+nodes_on_left, text_shift, height-text_shift);
+  if (mode != 3)
+  {
+    textAlign(RIGHT, BOTTOM);  
+    text("Nodes: "+nodes_on_right, width-text_shift, height-text_shift);
+    
+    textAlign(LEFT, BOTTOM);  
+    text("Nodes: "+nodes_on_left, text_shift, height-text_shift);
+  }
 }
 
 void draw_partition(){
@@ -72,4 +75,65 @@ void draw_nets(){
       println("Error: Net is only connected to one node!");
     }
   }
+}
+
+void draw_back_button(){
+    ellipseMode(CENTER);
+    noStroke();
+    fill(255,255,255);          ellipse(40, 40, CIRCLE_SIZE+5, CIRCLE_SIZE+5);
+    //fill(0,0,0);                ellipse(35, 35, CIRCLE_SIZE+2, CIRCLE_SIZE+2);
+    fill(my_nodes.get(0).c);    ellipse(40, 40, CIRCLE_SIZE, CIRCLE_SIZE);
+
+    fill(0,0,0);
+    textSize(13);
+    textAlign(CENTER, CENTER);  
+    text("Main\nMenu", 40+1, 40+1-3);
+    fill(255,255,255);
+    text("Main\nMenu", 40, 40-3);
+}
+
+void draw_complete(){
+  stroke(255,255,255);
+  fill(my_nodes.get(0).c);  ellipse(width/2, height/2, CIRCLE_SIZE*2, CIRCLE_SIZE*2);
+  
+  fill(0,0,0);
+  textSize(16);
+  textAlign(CENTER, CENTER);  
+  text("Play Again", width/2+1, height/2+1);
+  
+  fill(255,255,255);
+  textSize(16);
+  textAlign(CENTER, CENTER);  
+  text("Play Again", width/2, height/2);
+}
+
+void draw_complete_title(){
+ // rectMode(CENTER);
+  //fill(0,0,0,155);
+  //rect(width/2,height/2,width,height);
+  
+  noStroke();
+  for (int i = 0; i<5; i++)
+  {
+  fill(255,255,255,255);  ellipse(width/2-100+i*48, height/2-190, CIRCLE_SIZE*2+8, CIRCLE_SIZE*2+8);
+  }
+  
+  for (int i = 0; i<5; i++)
+  {
+    ellipseMode(CENTER);
+    fill(my_nodes.get(i).c);
+    ellipse(width/2-100+i*48, height/2-190, CIRCLE_SIZE*2, CIRCLE_SIZE*2) ;
+  }
+  
+  textFont(myFont);
+  
+  textSize(32);
+  fill(0,0,0); //set text to white
+  textAlign(CENTER, CENTER);   
+  text("Level Complete!", width/2+1, height/2-200+1);
+  //text("Peaceful Partition", width/2-1, height/2-200-1);
+  //text("Peaceful Partition", width/2-1, height/2-200+1);
+  //text("Peaceful Partition", width/2+1, height/2-200-1);
+  fill(255,255,255);           text("Level Complete!", width/2, height/2-200);
+  
 }

@@ -92,18 +92,18 @@ void node_collision_edge(){
           float size = my_nodes.get(i).size;
           
           // Right & left sides
-          if (x + size/2 > width){
+          if (x + size/2 > width-25){
             my_nodes.get(i).x -= move_dist;
           }
-          else if (x - size/2< 0){
+          else if (x - size/2< 35){
             my_nodes.get(i).x += move_dist;
           }
           
           // Top and bottom
-          if (y + size/2> height){
+          if (y + size/2> height-25){
             my_nodes.get(i).y -= move_dist;
           }
-          else if (y - size/2< 0){
+          else if (y - size/2< 25){
             my_nodes.get(i).y += move_dist;
           }
           

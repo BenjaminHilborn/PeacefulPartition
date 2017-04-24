@@ -26,10 +26,21 @@ class customNetwork
   customNetwork(int difficulty){
     switch(difficulty){
       case 0: 
-        int numberOfNodes=8;
-        int numberOfNets=7;
-        int numberOfConnectionsAllowed = 20; //must be >= numberOfNets + numberOfNodes
-        int numberOfConnectionsMade = 0;
+        int valid = 0;
+        int numberOfNodes = 0, numberOfNets = 0, numberOfConnectionsAllowed = 0, numberOfConnectionsMade = 0;
+        int tot= 0;
+        
+        do{
+        numberOfNodes=floor(random(8,14));
+        numberOfNets=floor(random(4,8));
+        tot = numberOfNets+numberOfNodes;
+        
+        numberOfConnectionsAllowed = tot+floor(random(1,3)); //must be >= numberOfNets + numberOfNodes
+        numberOfConnectionsMade = 0;
+        
+        if (numberOfConnectionsAllowed >= tot)
+          valid = 1;
+        }while(valid == 0);
         
         //make nodes
         my_nodes = new ArrayList<Node>();
@@ -70,6 +81,7 @@ class customNetwork
               }
             }
             
+           
           //else connect at random
           int netNumber = int(random(0,numberOfNets));
           int nodeNumber = int(random(0,numberOfNodes));
