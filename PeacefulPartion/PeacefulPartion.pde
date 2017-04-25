@@ -1,13 +1,6 @@
-//float[] positions =new float [3*2] ;
+
 float CIRCLE_SIZE = 50; 
 
-// comment
-// 0,1,2,3,4,5
-// 4,5,6,7,8,9
-//float bx;
-//float by;
-//int bs = 40;
-//int bz = 30;
 int window_width = 960;
 int window_height = 540;
 boolean bover = false;
@@ -25,8 +18,8 @@ int mode = 0; // 0 == main menu, 1 = about, 2 = play
 PFont myFont;
 int bestCuts=0;
 int minCuts = 3;
-float balanceMin = 0.1;
-float balanceMax = 0.9;
+float balanceMin = 0.4;
+float balanceMax = 0.6;
 
 
 customNetwork playNetwork;
@@ -41,15 +34,7 @@ void setup()
 
   newNetwork(0);  
   //_solve(); //algorithmically generate best solution
-  playNetwork = new customNetwork(0); 
-  customNetwork saveNetwork = playNetwork;
-  ArrayList<Node> saveNodes = my_nodes;
-  ArrayList<Net> saveNets = my_nets;
-  //FM is running into errors, avoid for now!
-  _solve(); //algorithmically generate best solution
-  playNetwork = saveNetwork;
-  my_nodes = saveNodes;
-  my_nets = saveNets;
+
   
   soundSetup();
   
@@ -57,13 +42,6 @@ void setup()
   
   imageMode (CENTER);
   size(960,540); // 960x540 will be final resolution
-  //bx = width/2.0;
-  //by = height/2.0;
-  
-  //for (int j=0; j < 3*2; j+=2) {
-  //  positions[j]= random(width-CIRCLE_SIZE);
-  //  positions[j+1]= random(height-CIRCLE_SIZE);
-  //}
   
   fill(153);
 }
@@ -239,7 +217,6 @@ void detectCuts(){
 void checkComplete(){
   if (net_cuts <= minCuts){
     double tot = nodes_on_left+nodes_on_right;
-    double asd = nodes_on_left/tot;
     
     if (nodes_on_left/tot > balanceMin && nodes_on_left/tot < balanceMax){
       mode = 3; 
@@ -269,12 +246,6 @@ void newNetwork(int val){
    playNetwork = new customNetwork(val);  
    detectNodesPerSide();
    detectCuts();
-  // int tot=nodes_on_right+nodes_on_left;
- /* if (nodes_on_left < floor(tot/2) ||  nodes_on_right < floor(tot/2)){
-    createAnother = 1;
-  }
-  else
-    createAnother = 0;*/
     
     if (net_cuts <= minCuts)
       createAnother = 1;
@@ -282,6 +253,17 @@ void newNetwork(int val){
       createAnother = 0;
 
   }while(createAnother == 1);
+  
+    //playNetwork = new customNetwork(0); 
+  //customNetwork saveNetwork = playNetwork;
+  //ArrayList<Node> saveNodes = my_nodes;
+  //ArrayList<Net> saveNets = my_nets;
+  //FM is running into errors, avoid for now!
+  //_solve(); //algorithmically generate best solution
+  //playNetwork = saveNetwork;
+  random_solve();
+  //my_nodes = saveNodes;
+  //my_nets = saveNets;
 
 
 }

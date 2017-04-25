@@ -6,10 +6,13 @@ void draw_text(){
   int text_shift = 10; // pixels away from edge of screen
 
   textAlign(RIGHT, TOP);  
-  text("Goal: "+bestCuts, width-text_shift, text_shift);
+  text("Goal: "+minCuts, width-text_shift, text_shift+text_size);
   
   textAlign(RIGHT, TOP);  
-  text("Your Score: "+net_cuts, width-text_shift, text_shift+text_size);
+  text("Your Score: "+net_cuts, width-text_shift, text_shift+text_size*2);
+  
+    textAlign(RIGHT, TOP);  
+  text("Balance Criteria: 40% to 60%", width-text_shift, text_shift);
   
   if (mode != 3)
   {

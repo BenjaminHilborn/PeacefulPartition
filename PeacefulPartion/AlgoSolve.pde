@@ -34,6 +34,47 @@ void _solve(){
   bestCuts = net_cuts;
 }
 
+void random_solve(){
+  //Backup play network
+  ArrayList<Float> node_x_orig = new ArrayList<Float>();
+  int bestCuts = 10;
+  // Back up nodes
+  for (int i = 0; i<my_nodes.size(); i++){
+    node_x_orig.add(my_nodes.get(i).x);
+  
+  }
+  
+  // Do this many times
+  for (int j = 0; j<12; j++){
+    // Randomize nodes
+    for (int k = 0; k<my_nodes.size(); k++){
+        int rand = (int) random(2) * 2 - 1;
+        if (rand == 1)  my_nodes.get(k).x = width/2-100;
+        else            my_nodes.get(k).x = width/2+100;
+        
+        detectNodesPerSide();
+        detectCuts();
+        
+        if (net_cuts < bestCuts){
+          double tot = nodes_on_left+nodes_on_right;
+    
+          if (nodes_on_left/tot > balanceMin && nodes_on_left/tot < balanceMax){
+            bestCuts = net_cuts;
+           }
+        }
+      
+    }
+  }
+  
+    for (int i = 0; i<my_nodes.size(); i++){
+      my_nodes.get(i).x = node_x_orig.get(i);
+    }  
+    
+    minCuts = bestCuts;
+    println(minCuts);
+
+}
+
 int computeGain(Node node){
   detectCuts();
   int startCuts = net_cuts;
@@ -78,7 +119,7 @@ public static void quickSort(ArrayList<Node> arr, int low, int high) {
     Node pivot = (Node)arr.get(middle);
  
     // make left < pivot and right > pivot
-    int i = low, j = high;
+    int i = low, j = high-1;
     while (i <= j) {
       while (arr.get(i).gain < pivot.gain) {
         i++;
@@ -97,10 +138,10 @@ public static void quickSort(ArrayList<Node> arr, int low, int high) {
       }
     }
  
-//    // recursively sort two sub parts
-//    if (low < j)
-//      quickSort(arr, low, j);
+    // recursively sort two sub parts
+    if (low < j)
+      quickSort(arr, low, j);
  
-//    if (high > i)
-//      quickSort(arr, i, high);
-//  }
+    if (high > i)
+      quickSort(arr, i, high);
+  }
