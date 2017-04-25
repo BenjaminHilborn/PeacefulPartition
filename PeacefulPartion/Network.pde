@@ -1,5 +1,7 @@
 import java.util.Arrays;
 
+int maxBalanceDifference;
+
 // a basic class that has Id number
 class Object
 {
@@ -26,6 +28,11 @@ class customNetwork
   customNetwork(int difficulty){
     switch(difficulty){
       case 0: 
+        maxBalanceDifference=2;
+        int numberOfNodes=8;
+        int numberOfNets=7;
+        int numberOfConnectionsAllowed = 20; //must be >= numberOfNets + numberOfNodes
+        int numberOfConnectionsMade = 0;
         int valid = 0;
         int numberOfNodes = 0, numberOfNets = 0, numberOfConnectionsAllowed = 0, numberOfConnectionsMade = 0;
         int tot= 0;

@@ -23,6 +23,7 @@ int nodes_on_left = 0;
 int net_cuts = 0;
 int mode = 0; // 0 == main menu, 1 = about, 2 = play
 PFont myFont;
+int bestCuts=0;
 int minCuts = 3;
 float balanceMin = 0.1;
 float balanceMax = 0.9;
@@ -40,6 +41,15 @@ void setup()
 
   newNetwork(0);  
   //_solve(); //algorithmically generate best solution
+  playNetwork = new customNetwork(0); 
+  customNetwork saveNetwork = playNetwork;
+  ArrayList<Node> saveNodes = my_nodes;
+  ArrayList<Net> saveNets = my_nets;
+  //FM is running into errors, avoid for now!
+  _solve(); //algorithmically generate best solution
+  playNetwork = saveNetwork;
+  my_nodes = saveNodes;
+  my_nets = saveNets;
   
   soundSetup();
   

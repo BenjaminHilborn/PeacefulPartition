@@ -31,6 +31,7 @@ class Node extends Object
   float randomWalkY;
   float size;
   float soundFreq;
+  int partition;
 }
 
 void detectNodesPerSide(){
@@ -38,8 +39,15 @@ void detectNodesPerSide(){
   int right = 0;
   
   for (int i=0; i < my_nodes.size(); i++){
-    if (my_nodes.get(i).x > window_width/2) right++;
-    else  left++;
+    if (my_nodes.get(i).x > window_width/2){
+      right++;
+      my_nodes.get(i).partition = 1;
+    }
+    else{
+      left++;
+      my_nodes.get(i).partition = 0;
+    }
+    
   }
   
   nodes_on_right = right;
